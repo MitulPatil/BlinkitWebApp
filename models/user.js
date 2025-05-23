@@ -50,12 +50,10 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
       minlength: 6,
     },
     phone: {
       type: Number,
-      required: true,
       match:/^[0-9]{10}$/,
     },
     addresses: {
