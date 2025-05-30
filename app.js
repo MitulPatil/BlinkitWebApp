@@ -5,6 +5,7 @@ const authRouter = require("./routes/auth");
 const adminRouter = require("./routes/admin");
 const expressSession = require("express-session");
 const path = require("path");
+const cookieParser = require("cookie-parser")
 
 require("dotenv").config();
 require("./config/google_oauth_config")
@@ -21,6 +22,8 @@ app.use(
         secret:process.env.SESSION_SECRET,
     })
 )
+
+app.use(cookieParser());
 
 app.use('/',indexRouter);
 app.use("/auth",authRouter);

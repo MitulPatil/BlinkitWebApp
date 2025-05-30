@@ -1,8 +1,9 @@
 const express = require("express")
 const router = express.Router();
-const {adminModel} = require("../models/admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {adminModel} = require("../models/admin");
+const validateAdmin = require("../middlewares/admin");
 
 require("dotenv").config();
 
@@ -17,14 +18,14 @@ if(typeof process.env.NODE_ENV != undefined &&
     
                 let user = new adminModel({
                     name:"mitul",
-                    email:"admit123@test.com",
+                    email:"admin123@test.com",
                     password:hash,
                     role:"admin",
                 })
     
                 await user.save();
     
-                let token = jwt.sign({email:"admit123@test.com"},process.env.JWT_KEY);
+                let token = jwt.sign({email:"admin123@test.com"},process.env.JWT_KEY);
                 res.cookie("token",token);
                 res.send("admin created successfully");
             }catch(err){
@@ -37,6 +38,7 @@ if(typeof process.env.NODE_ENV != undefined &&
 router.get("/login",function(req,res){
     res.render("admin_login");
 })
+
 router.post("/login",async function(req,res){
     let {email,password} = req.body;
     let admin = await adminModel.findOne({email});
@@ -49,6 +51,15 @@ router.post("/login",async function(req,res){
         res.cookie("token",token);
         res.redirect("/admin/dashboard");
     }
+})
+
+router.get("/dashboard",validateAdmin,function(req,res){
+    res.render("admin_dashboard");
+})
+
+router.get("/logout",function(res,res){
+    res.cookie("token","");
+    res.redirect("/admin/login");
 })
 
 module.exports = router;
