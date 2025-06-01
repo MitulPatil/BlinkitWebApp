@@ -57,7 +57,11 @@ router.get("/dashboard",validateAdmin,function(req,res){
     res.render("admin_dashboard");
 })
 
-router.get("/logout",function(res,res){
+router.get("/products",validateAdmin,function(req,res){
+    res.render("admin_products");
+})
+
+router.get("/logout",validateAdmin,function(res,res){
     res.cookie("token","");
     res.redirect("/admin/login");
 })

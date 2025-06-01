@@ -6,7 +6,6 @@ const productSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true,
     minlength: 3,
     maxlength: 100,
   },
@@ -22,14 +21,14 @@ const productSchema = new mongoose.Schema({
     maxlength:50,
   },
   stock: {
-    type: Boolean,
+    type: Number,
     required: true,
   },
   description: {
     type: String,
   },
   image: {
-    type: String,
+    type: Buffer,
   },
 }, { timestamps: true });
  
@@ -37,10 +36,10 @@ const productSchema = new mongoose.Schema({
 // Joi validation function
 function validateProduct(data) {
   const schema = Joi.object({
-    name: Joi.string().min(3).max(100).required().trim(),
+    name: Joi.string().min(3).max(100).required(),
     price: Joi.number().min(0).required(),
     category: Joi.string().min(3).max(50).required(),
-    stock: Joi.boolean().required(),
+    stock: Joi.number().required(),
     description: Joi.string().optional(),
     image: Joi.string().optional(),
   });
