@@ -19,13 +19,13 @@
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <h3 class="text-lg font-medium text-gray-600">Total Products</h3>
                                 <p class="mt-2 text-2xl font-bold text-gray-900">
-                                   
+                                   <%=prodcount%>
                                 </p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
                                 <h3 class="text-lg font-medium text-gray-600">Total Categories</h3>
                                 <p class="mt-2 text-2xl font-bold text-gray-900">
-                                    
+                                   <%=catecount%> 
                                 </p>
                             </div>
                             <div class="bg-gray-50 p-4 rounded-lg">
@@ -93,7 +93,7 @@
                         <div class="bg-white shadow rounded-lg p-6">
                             <h2 class="text-2xl font-semibold text-gray-800">Manage Categories</h2>
                             <form autocomplete="off" class="mt-4" action="/categories/create" method="POST">
-                                <h3 class="text-lg font-medium text-gray-700">Create or Update Category</h3>
+                                <h3 class="text-lg font-medium text-gray-700">Create Category</h3>
                                 <div class="mt-2">
                                     <input type="text" name="name" placeholder="Category Name" required
                                         class="w-full p-2 border border-gray-300 rounded">
