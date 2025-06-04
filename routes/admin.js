@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const {adminModel} = require("../models/admin");
 const {productModel} = require("../models/product");
 const {categoryModel} = require("../models/category");
-const validateAdmin = require("../middlewares/admin");
+const {validateAdmin} = require("../middlewares/admin");
 
 require("dotenv").config();
 

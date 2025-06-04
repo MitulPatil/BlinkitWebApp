@@ -14,4 +14,9 @@ async function validateAdmin(req,res,next){
     }
 }
 
-module.exports = validateAdmin;
+async function userIsLoggedIn(req,res,next) {
+    if (req.isAuthenticated()) return next();
+    res.redirect("/users/login");
+}
+
+module.exports = {validateAdmin,userIsLoggedIn};

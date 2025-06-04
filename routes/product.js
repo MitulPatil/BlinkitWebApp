@@ -3,11 +3,35 @@ const router = express.Router();
 const {productModel, validateProduct } = require("../models/product");
 const {categoryModel , validateCategory} = require("../models/category");
 const upload = require("../config/multer_config");
-const validateAdmin = require("../middlewares/admin");
+const {validateAdmin, userIsLoggedIn} = require("../middlewares/admin");
 
-router.get("/",async function(req,res){ // to get all products 
+router.get("/",userIsLoggedIn,async function(req,res){ // to get all products 
     let prods = await productModel.find();
-    res.render("index");
+
+    const resultArray = await productModel.aggregate([
+    {
+        $group: {
+        _id: "$category",
+        products: { $push: "$$ROOT" }
+        }
+    },
+    {
+        $project: {
+        _id: 0,
+        category: "$_id",
+        products: { $slice: ["$products", 10] }
+        }
+    }
+    ]);
+
+    let rnproducts = await productModel.aggregate([{ $sample : { size:3 }}]) 
+
+    // Convert the array to an object with category names as keys
+    const resultObject = {};
+    resultArray.forEach(cat => {
+    resultObject[cat.category] = cat.products;
+    });
+    res.render("index",{products: resultObject, rnproducts});
 })
 router.post("/", upload.single('image'),async function(req,res){ // it will create product 
     let {name,price,category,stock,description,image} = req.body;
@@ -26,7 +50,7 @@ router.post("/", upload.single('image'),async function(req,res){ // it will crea
     let isCategory = await categoryModel.findOne({name: categoryName});
 
     if(!isCategory){
-        await categoryModel.create({name:category});
+        await categoryModel.create({name:categoryName});
     }    
     //console.log(req.file); // when you store your image using multer you image is store in req.file
 

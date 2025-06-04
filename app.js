@@ -6,6 +6,7 @@ const adminRouter = require("./routes/admin");
 const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
 const usersRouter = require("./routes/users");
+const cartRouter = require("./routes/cart");
 
 const expressSession = require("express-session");
 const path = require("path");
@@ -38,5 +39,6 @@ app.use('/admin',adminRouter);
 app.use("/products",productRouter)
 app.use("/categories",categoryRouter);
 app.use("/users",usersRouter);
+app.use("/cart",cartRouter);
 
 app.listen(3000);

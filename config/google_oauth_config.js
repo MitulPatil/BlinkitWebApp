@@ -35,7 +35,7 @@ passport.serializeUser(function(user,cb){
 
 
 passport.deserializeUser(async function(id,cb){
-    let user = await userModel.findOne({_id:id});
+    let user = await userModel.findOne({_id:id}); 
     cb(null,user);
 })
 

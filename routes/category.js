@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {categoryModel} = require("../models/category");
-const validateAdmin = require("../middlewares/admin");
+const {validateAdmin} = require("../middlewares/admin");
 
 router.post("/create",validateAdmin,async function(req,res){
     if(req.user.admin){
