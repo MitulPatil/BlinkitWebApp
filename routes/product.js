@@ -2,12 +2,13 @@ const express = require("express")
 const router = express.Router();
 const {productModel, validateProduct } = require("../models/product");
 const {categoryModel , validateCategory} = require("../models/category");
+const {cartModel} = require("../models/cart");
 const upload = require("../config/multer_config");
 const {validateAdmin, userIsLoggedIn} = require("../middlewares/admin");
 
 router.get("/",userIsLoggedIn,async function(req,res){ // to get all products 
-    let prods = await productModel.find();
-
+    // let prods = await productModel.find();
+    let somethingInCart = false;
     const resultArray = await productModel.aggregate([
     {
         $group: {
@@ -24,6 +25,10 @@ router.get("/",userIsLoggedIn,async function(req,res){ // to get all products
     }
     ]);
 
+    let cart = await cartModel.findOne({user:req.session.passport.user});
+
+    if(cart && cart.products.length > 0) somethingInCart =true;
+
     let rnproducts = await productModel.aggregate([{ $sample : { size:3 }}]) 
 
     // Convert the array to an object with category names as keys
@@ -31,7 +36,10 @@ router.get("/",userIsLoggedIn,async function(req,res){ // to get all products
     resultArray.forEach(cat => {
     resultObject[cat.category] = cat.products;
     });
-    res.render("index",{products: resultObject, rnproducts});
+    res.render("index",{products: resultObject, 
+        rnproducts,
+        somethingInCart,
+        cartCount: cart ? cart.products.length:0,});
 })
 router.post("/", upload.single('image'),async function(req,res){ // it will create product 
     let {name,price,category,stock,description,image} = req.body;

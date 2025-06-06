@@ -7,6 +7,7 @@ const productRouter = require("./routes/product");
 const categoryRouter = require("./routes/category");
 const usersRouter = require("./routes/users");
 const cartRouter = require("./routes/cart");
+const paymentRouter = require("./routes/payment");
 
 const expressSession = require("express-session");
 const path = require("path");
@@ -40,5 +41,6 @@ app.use("/products",productRouter)
 app.use("/categories",categoryRouter);
 app.use("/users",usersRouter);
 app.use("/cart",cartRouter);
+app.use("/payment",paymentRouter);
 
 app.listen(3000);

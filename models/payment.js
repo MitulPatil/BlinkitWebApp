@@ -3,29 +3,29 @@ const Joi = require("joi");
 
 // Mongoose Payment Schema with validation
 const paymentSchema = new mongoose.Schema({
-  order: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "order",
+  orderId: {
+    type: String,
     required: true,
+  },
+  paymentId: {
+    type: String,
+    required:true,
+  },
+  signature: {
+    type: String,
   },
   amount: {
     type: Number,
     required: true,
-    min: 0,
+    min:0
   },
-  method: {
+  currency: {
     type: String,
     required: true,
   },
   status: {
     type: String,
-    required: true,
-  },
-  transactionID: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true,
+    default: 'pending',
   },
 }, { timestamps: true });
  
@@ -33,11 +33,14 @@ const paymentSchema = new mongoose.Schema({
 // Joi validation function
 function validatePayment(data) {
   const schema = Joi.object({
-    order: Joi.string().required(),
+    orderId: Joi.string().required(),
+    paymentId: Joi.string().required(),
+    signature: Joi.string(),
     amount: Joi.number().min(0).required(),
-    method: Joi.string().required(),
+    currency: Joi.string().required(),
     status: Joi.string().required(),
-    transactionID: Joi.string().required(),
+    // method: Joi.string().required(),
+    // transactionID: Joi.string().required(),
   });
 
   return schema.validate(data);
